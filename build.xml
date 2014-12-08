@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project name="sfc" default="run" basedir=".">
+
+    <description>SFC project - ART neural network</description>
+
+    <property name="src" location="src"/>
+    <property name="out.production" location="out/production"/>
+    <property name="out.jar" location="out/jar"/>
+    <property name="out.jar.name" value="${out.jar}/art.jar"/>
+
+    <presetdef name="javac">
+        <javac includeantruntime="false" />
+    </presetdef>
+
+    <!-- clean out directory -->
+    <target name="clean" description="Clean out directory">
+        <delete dir="${out.production}"/>
+        <delete dir="${out.jar}"/>
+    </target>
+
+    <!-- compile source codes -->
+    <target name="compile" depends="clean" description="Compile source code">
+        <mkdir  dir="${out.production}"/>
+        <javac  srcdir="${src}"
+                destdir="${out.production}"
+                encoding="UTF-8">
+        </javac>
+    </target>
+
+    <!-- create jar archive -->
+    <target name="jar" depends="compile" description="Create runnable jar archive">
+        <mkdir dir="${out.jar}"/>
+        <jar jarfile="${out.jar.name}" basedir="${out.production}">
+            <manifest>
+                <attribute name="Main-Class" value="art.Main"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- run application -->
+    <target name="run" depends="jar" description="Run application from jar archive">
+        <java jar="${out.jar.name}/" dir="${out.jar}" fork="true"/>
+    </target>
+
+</project>

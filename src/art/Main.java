@@ -3,10 +3,10 @@ package art;
 import javax.swing.*;
 
 /**
- * Class:
- * Author: martinvy
+ * Class:  Main - entry point of application
+ * Author: Martin Veselovsky
  * Date:   28.10.2014.
- * Info:
+ * Info:   Create main window.
  */
 public class Main {
 
@@ -17,54 +17,15 @@ public class Main {
         ART1 art1 = new ART1();
         //art1.test_adapt();
 
-//        boolean init = true;
-//
-//        File folder = new File("lib/simple");
-//        for (File file: folder.listFiles()) {
-//            System.out.println(file);
-//
-//            BufferedImage img = null;
-//            try {
-//                img = ImageIO.read(new File(folder + "/" + file.getName()));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            if (img != null) {
-//                byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-//                int[] input_gray = new int[pixels.length / 3];
-//
-//                for (byte pixel: pixels)
-//                    System.out.print(pixel);
-//
-//                System.out.println(pixels.length);
-//                int k = 0;
-//                for (int i = 0; i < pixels.length; i += 3) {
-//                    input_gray[k] = Math.abs((int) pixels[i]) ;
-//                    if (input_gray[k] > 1)
-//                        System.out.println("######## WTF: " + input_gray[k]);
-//                    k++;
-//                }
-//                for (int j = 0; j<k;j++)
-//                    System.out.print(input_gray[j]);
-//
-//                if (init) {
-//                    art1.init(k);
-//                    init = false;
-//                }
-//                art1.step(input_gray);
-//            }
-//        }
-
         // window
-        JFrame window = new JFrame("ART1 algorithm visualisation");
+        JFrame window = new JFrame("Black and white pictures classification by ART neural network");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setSize(800, 800);
-        window.setVisible(true);
+        window.setSize(800, 700);
 
 //        Panel jp = new Panel(art1);
         Gui jp = new Gui(art1);
 
         window.add(jp);
+        window.setVisible(true);
     }
 }

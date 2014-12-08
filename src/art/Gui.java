@@ -159,19 +159,13 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
      * @param assigned_n number of last assigned neuron
      */
     public void saveImg(int assigned_n) {
-        int[] neuron = art1.getT().get(assigned_n);
-        byte[] pixels = new byte[input_bw.length * 4];
 
-        int k = -1;
-        for (int i = 0; i < pixels.length; i++) {
-            if (i % 4 == 0 && k+1 < neuron.length) k++;
-            pixels[i] = ((byte) (neuron[k]* (-1)));
-        }
+        System.out.println("---- saving assigned neuron " + assigned_n + " with this t weight ----");
+        int[] neuron = art1.getT().get(assigned_n);
 
         try {
-            BufferedImage new_img = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-            System.out.println("---- saving assigned neuron " + assigned_n + " with this t weight ----");
+            // create array of RGB values
+            // - we are saving black or white color (according to 0 or 1 in neuron T weights)
             int[] im = new int[neuron.length];
             for (int i = 0; i < neuron.length; i++) {
                 System.out.print(neuron[i]);
@@ -182,8 +176,11 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
             }
             System.out.println();
 
+            // create image from RGB array
+            BufferedImage new_img = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
             new_img.setRGB(0, 0, img.getWidth(), img.getHeight(), im, 0, img.getWidth());
 
+            // save image to file (number)neuron.png in created /out/ in directory of input images
             String filepath = path + "/out/" + Integer.toString(assigned_n) + "neuron.png";
             ImageIO.write(new_img, "png", new File(filepath));
 
@@ -199,7 +196,7 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
                 jl.setToolTipText(
                     "<html><body><img src=\"" + files[actual_file].toURI().toURL() + "\"></body></html>");
 
-                // get
+                // get neuron panel -> get assigned inputs panel (grid layout)
                 ((JPanel) neurons_panels.get(assigned_n).getComponent(1)).add(jl);
             }
 
@@ -228,10 +225,10 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
                 jp.add(assigned_inputs);
 
                 // add new neuron title
-                JLabel jl = new JLabel(Integer.toString(assigned_n) + "-neuron: ");
+                JLabel jl = new JLabel(Integer.toString(assigned_n) + "-neuron:");
                 jl.setFont(new Font("Arial Black", Font.BOLD, 18));
                 assigned_inputs.add(jl);
-                assigned_inputs.add(Box.createRigidArea(new Dimension(0,0)));
+                assigned_inputs.add(new JLabel());
 
                 // add input which was assigned and set tooltip to its image
                 JLabel in_lab = new JLabel(files[actual_file].getName());
@@ -291,9 +288,12 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
                 File out = new File(path + "/out");
                 // make dir - if directory already exists (false returned) -> clean all files in /out
                 if (!out.mkdirs()) {
-                    for (File file: out.listFiles()) {
-                        if(!file.delete()) {
-                            status_lab.setText("Error while cleaning output directory /out occurred.");
+                    File[] files = out.listFiles();
+                    if (files != null) {
+                        for (File file : files) {
+                            if (!file.delete()) {
+                                status_lab.setText("Error while cleaning output directory /out occurred.");
+                            }
                         }
                     }
                 }
@@ -370,17 +370,22 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
                 status_lab.setText("Please do initialization first.");
                 return;
             }
-            while (actual_file + 1 < files.length) {
-                input_title.setText("Input: " + (actual_file + 1));
-                step();
-                neurons_title.setText("Neurons: " + art1.getM());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (actual_file + 1 < files.length) {
+                        input_title.setText("Input: " + (actual_file + 1));
+                        step();
+                        neurons_title.setText("Neurons: " + art1.getM());
 
-                //TODO nefunguje - asi bude treba spravit thread
-                validate();
-                revalidate();
-                repaint();
-            }
-            status_lab.setText("All input vectors have been processed. ( " + (actual_file + 1) + " )");
+                        validate();
+                        revalidate();
+                        repaint();
+                    }
+                    status_lab.setText("All input vectors have been processed. ( " + (actual_file + 1) + " )");
+                    input_title.setText("Input: " + (actual_file + 1));
+                }
+            }).start();
         }
 
         // save
@@ -392,7 +397,7 @@ public class Gui extends JPanel implements ActionListener, ChangeListener {
             try {
                 PrintWriter res_f = new PrintWriter(path + "/out/results.txt");
                 for (JPanel panel: neurons_panels) {
-                    for (Component component: panel.getComponents()) {
+                    for (Component component: ((JPanel) panel.getComponent(1)).getComponents()) {
                         res_f.print(((JLabel) component).getText() + " ");
                     }
                     res_f.println();
