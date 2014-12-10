@@ -22,6 +22,7 @@ public class ART1 {
     private double similarity = 0.0;    // last step similarity
 
     private static int step_count = 0;
+    private Boolean logging = true;
 
 
     /**
@@ -34,7 +35,7 @@ public class ART1 {
      * Initialization of neurons weights
      */
     public void init(int n) {
-        System.out.println("Initialization");
+        logLN("Initialization");
 
         this.n = n; // n input neurons (n == length of input vector)
         this.m = 1; // 1 output neuron in the beginning
@@ -78,9 +79,9 @@ public class ART1 {
     public int step(int[] in) {
 
         step_count++;
-        System.out.println("===========");
-        System.out.println("> STEP: " + step_count);
-        System.out.println("input vector:\n" + print_input(in));
+        logLN("===========");
+        logLN("> STEP: " + step_count);
+        logLN("input vector:\n" + print_input(in));
 
         int assigned_neuron = -1;
 
@@ -101,7 +102,7 @@ public class ART1 {
                     winner = j;
                 }
             }
-            System.out.println("Winning neuron: " + winner);
+            logLN("Winning neuron: " + winner);
 
             // compare similarity
             double sum_ti = 0;
@@ -112,7 +113,7 @@ public class ART1 {
             }
             similarity = sum_ti/sum_i;
 
-            System.out.println("Similarity: " + similarity + "  (vigilance: " + vigilance + ")");
+            logLN("Similarity: " + similarity + "  (vigilance: " + vigilance + ")");
 
             // vigilance test
             if (similarity >= vigilance) {
@@ -125,13 +126,13 @@ public class ART1 {
 
                 A.clear();  // break loop, get next input
 
-                System.out.println("Neuron " + winner + " assigned to input vector.");
+                logLN("Neuron " + winner + " assigned to input vector.");
                 assigned_neuron = winner;
 
             } else {
                 // vectors are not similar enough, remove neuron from Set
                 A.remove(winner);
-                System.out.println("Neuron " + winner + " is not similar enough to input vector.");
+                logLN("Neuron " + winner + " is not similar enough to input vector.");
 
                 // create new neuron
                 if (A.isEmpty()) {
@@ -147,7 +148,7 @@ public class ART1 {
                     System.arraycopy(in, 0, wt, 0, n);
                     t.add(wt);
 
-                    System.out.println("Neuron " + m + " created for input vector");
+                    logLN("Neuron " + m + " created for input vector");
                     assigned_neuron = m;
                     similarity = 1.0;   // for printings, useless for algorithm
                     m++;
@@ -156,6 +157,7 @@ public class ART1 {
         }
         write();
 
+//      // waiting for key press
 //        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 //        try {
 //            br.readLine();
@@ -172,21 +174,21 @@ public class ART1 {
      * t - top-down weights (int 0/1)
      */
     public void write() {
-        System.out.println("Bottom-up");
+        logLN("Bottom-up");
         for (double[] i: b) {
             for (double j : i)
-                System.out.print(" " + j);
-            System.out.println();
+                log(" " + j);
+            logLN("");
         }
 
-        System.out.println("Top-down");
+        logLN("Top-down");
         for (int[] i: t) {
             int sum = 0;
             for (int j : i) {
-                System.out.print(j);
+                log(Integer.toString(j));
                 sum += j;
             }
-            System.out.println(" Sum t: " + sum);
+            logLN(" Sum t: " + sum);
         }
     }
 
@@ -200,6 +202,16 @@ public class ART1 {
         for (int i = 0; i < n; i++)
             x += in[i];
         return x;
+    }
+
+    public void logLN(String s) {
+        if (logging)
+            System.out.println(s);
+    }
+
+    public void log(String s) {
+        if (logging)
+            System.out.print(s);
     }
 
     // getters
@@ -246,5 +258,11 @@ public class ART1 {
      */
     public void setVigilance(double value) {
         this.vigilance = value;
+    }
+    /**
+     * @param logging allow or decline logging
+     */
+    public void setLogging(Boolean logging) {
+        this.logging = logging;
     }
 }

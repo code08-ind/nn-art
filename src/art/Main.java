@@ -22,7 +22,6 @@ public class Main {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setSize(800, 700);
 
-//        Panel jp = new Panel(art1);
         Gui jp = new Gui(art1);
 
         window.add(jp);
