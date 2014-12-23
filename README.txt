@@ -17,7 +17,7 @@ representation (getting each 4th bit only to check B/W).
 
 II. Structure
 ==============
-+ lib	            ...  Collections of images (simple and vehicles)
++ lib	          ...  Collections of images (simple and vehicles)
 + src             ...  Source files of this project
 + out/production  ...  Output directory for *.class
 + out/jar         ...  Output directory for art.jar runnable archive  
