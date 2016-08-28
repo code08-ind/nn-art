@@ -1,21 +1,14 @@
-## Black&white pictures classification by ART neural network
+## ART neural network for clustering of B&W pictures
 
-```
-Project: VUT FIT Soft computing 2014
-Author:  Martin Veselovský, xvesel60
-Email:   xvesel60@stud.fit.vutbr.cz
-```
-
-### I. Description
-```
-Classification of binary input vectors depending on vigilance 
+Clustering of binary input vectors depending on vigilance 
 parameter (limit of similarity) to in advance unknown number of classes.
 
 Program is processing black&white PNG pictures in RGBA representation 
 (getting each 4th bit only to check B/W).
-```
 
-### II. Structure
+Program was created within course Soft Computing at Faculty of Information Technolog, BUT, 2014.
+
+#### Project structure
 ```
 + lib	          ...  Collections of images (simple and vehicles)
 + src             ...  Source files of this project
@@ -27,14 +20,13 @@ Program is processing black&white PNG pictures in RGBA representation
 ```
 
 ### III. Usage
+Using Ant tool.
 ```
-Ant tool usage:
-
-  ant clean
-  ant compile  (includes clean)
-  ant jar      (includes compile)
-  ant run      (includes jar)
-  ant          (same as ant run)   
+ant clean
+ant compile  (includes clean)
+ant jar      (includes compile)
+ant run      (includes jar)
+ant          (same as ant run)   
 ```
 
 
