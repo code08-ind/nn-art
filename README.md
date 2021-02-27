@@ -1,32 +1,25 @@
-## ART neural network for clustering of B&W pictures
+## Clustering by Adaptive Resonance Theory (ART)
 
-Clustering of binary input vectors depending on vigilance 
-parameter (limit of similarity) to in advance unknown number of classes.
+[Adaptive resonance theory (ART)](https://en.wikipedia.org/wiki/Adaptive_resonance_theory) 
+describes several neural network models for pattern recognition and prediction.
+This project is using ART1 neural network type for clustering black & white images as described in the attached [documentation](doc.pdf).
 
-Program is processing black&white PNG pictures in RGBA representation 
-(getting each 4th bit only to check B/W).
+The neural network is sensitive to "vigilance" parameter. 
+Higher vigilance produces highly detailed clusters, while lower vigilance results in more general clusters.
 
-Program was created within course Soft Computing at Faculty of Information Technolog, BUT, 2014.
+The program is expecting black & white PNG pictures in RGBA representation, where only the alpha (4th bit) determines whether the image is black or white.
 
-#### Project structure
-```
-+ lib	          ...  Collections of images (simple and vehicles)
-+ src             ...  Source files of this project
-+ out/production  ...  Output directory for *.class
-+ out/jar         ...  Output directory for art.jar runnable archive  
-- README.txt      ...  This file 
-- doc.pdf         ...  Technical report of project
-- build.xml       ...  Build instructions for ant tool
-```
+### Usage
 
-### III. Usage
-Using Ant tool.
+Use `ant` to compile and run the program's GUI.
+
 ```
 ant clean
 ant compile  (includes clean)
 ant jar      (includes compile)
 ant run      (includes jar)
-ant          (same as ant run)   
+ant          (same as ant run)
 ```
 
-
+### Note
+The project was created as a homework within Soft Computing course at Faculty of Information Technology, Brno University of Technology, 2014.
